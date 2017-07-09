@@ -2,6 +2,8 @@
 import webapp2
 import os
 from google.appengine.ext.webapp import template
+from google.appengine.ext.db import Key
+
 import json 
 
 from models import Ride as RideModel
@@ -16,7 +18,7 @@ class MainPage(webapp2.RequestHandler):
         self.response.out.write(template.render(path, {}))
 
 
-class Ride(webapp2.RequestHandler):
+class Rides(webapp2.RequestHandler):
 	def post(self):
 		jsonstring = self.request.body
 		jsonobject = json.loads(jsonstring)
@@ -39,7 +41,13 @@ class Ride(webapp2.RequestHandler):
 		self.response.headers['Content-Type'] = 'application/json'
 		self.response.out.write(json.dumps(rides_json))
 
+class Ride(webapp2.RequestHandler):
+    def get(self, ride_id):
+    	ride = RideModel.all().filter("__key__ =",Key(ride_id)).get()
+        self.response.write(ride.to_json())
+
 app = webapp2.WSGIApplication([
     ('/', MainPage),
-    ('/ride', Ride)
+    ('/rides', Rides),
+    ('/ride/(\w+-\w+)', Ride)
 ], debug=True)

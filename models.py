@@ -13,6 +13,7 @@ class Ride(db.Model):
 
   def to_json(self):
   	ride_dict = {
+  	"id":str(self.key()),
   	"destination":self.destination, 
   	"source":self.source, 
   	"when":str(self.when),
