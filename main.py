@@ -17,6 +17,13 @@ class MainPage(webapp2.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'index.html')
         self.response.out.write(template.render(path, {}))
 
+class RidePage(webapp2.RequestHandler):
+    def get(self,ride_id):
+        path = os.path.join(os.path.dirname(__file__), 'ride.html')
+
+        ride = RideModel.all().filter("__key__ =",Key(ride_id)).get()
+
+        self.response.out.write(template.render(path, {'ride':ride}))
 
 class Rides(webapp2.RequestHandler):
 	def post(self):
@@ -34,8 +41,8 @@ class Rides(webapp2.RequestHandler):
 		ride.put()
 
 	def get(self):
-		rides = RideModel.all().filter("when >=",date.today()).run()
-		# rides = RideModel.all().fetch()
+		# rides = RideModel.all().filter("when >=",date.today()).run()
+		rides = RideModel.all().run()
 		rides_json = [ride.to_json() for ride in rides]
 
 		self.response.headers['Content-Type'] = 'application/json'
@@ -49,5 +56,6 @@ class Ride(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/rides', Rides),
-    ('/ride/(\w+-\w+)', Ride)
+    # ('/ride/(\w+-\w+)', RidePage)
+    ('/ride/(\w+)', RidePage)
 ], debug=True)
