@@ -8,7 +8,7 @@ $(document).ready(function(){
 	        	ride = JSON.parse(rides[i]);
 	        	ride_page = '\'/ride/'+ride["id"]+'\'"';
 		        ride_html = '<button onclick="location.href=' + ride_page;
-		        ride_html = ride_html + ' class="col-sm-4" style="border: 0;background-color: white;">';
+		        ride_html = ride_html + ' class="col-md-4" style="border: 0;background-color: white;">';
 		        ride_html = ride_html + '<div class="panel panel-primary">';
 		        ride_html = ride_html + '<div class="panel-heading"><strong>SHARED RIDE AVAILABLE</strong></div>';
 		        ride_html = ride_html + '<div class="panel-body"><p>From: ' + ride['source'];
